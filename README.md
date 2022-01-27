@@ -2,5 +2,7 @@
 
 Notes
 - Requires Java 1.8 or greater
-- Add Jar files under lib directory to classpath
-- See further setup and usage within the edu.ucr.cs242.project.Main class
+- Add jar files under the lib directory to classpath
+- Update value assigned to Config.UNSPLASH_ACCESS_KEY with an encrypted Unsplash Access Key (see EncDec.java) or a plain-text Unsplash Access Key
+- Update value assigned to Config.ARCHIVE_FILEPATH_ROOT with a valid directory to serve as a download destination
+- Compile and execute the Main class
