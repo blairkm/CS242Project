@@ -69,14 +69,20 @@ public class LuceneIndexer {
             Document doc = new Document();
 
             // for each field, add as a stringField to the document
+            
             for(String field : (Set<String>) object.keySet()){
-                Class type = object.get(field).getClass();
-                if(type.equals(String.class)){
-                    doc.add(new StringField(field, (String)object.get(field), Field.Store.YES));
-                }
-                else if(type.equals(Boolean.class) | type.equals(Long.class) | type.equals(Double.class)){
-                    doc.add(new StringField(field, object.get(field).toString(), Field.Store.YES));
-                }
+                System.out.println(field);
+                try {
+                    Class type = object.get(field).getClass();
+                    if(type.equals(String.class)){
+                        doc.add(new StringField(field, (String)object.get(field), Field.Store.YES));
+                    }
+                    else if(type.equals(Boolean.class) | type.equals(Long.class) | type.equals(Double.class)){
+                        doc.add(new StringField(field, object.get(field).toString(), Field.Store.YES));
+                    }
+                } catch (Exception ex) {
+                    //ex.printStackTrace(System.err);
+                }                
             }
             try{
                 System.out.println(doc);
