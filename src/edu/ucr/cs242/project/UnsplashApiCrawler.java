@@ -63,36 +63,39 @@ public class UnsplashApiCrawler {
                             System.out.println(response1.getCode() + " " + response1.getReasonPhrase());
                         }
 
-                        HttpEntity entity1 = response1.getEntity();
-                        result = IOUtils.toString(entity1.getContent(), StandardCharsets.UTF_8);
-                        if (Config.DEBUG) {
-                            System.out.println(result);
+                        if (statusCode == 200) {
+                            HttpEntity entity1 = response1.getEntity();
+                            result = IOUtils.toString(entity1.getContent(), StandardCharsets.UTF_8);
+                            if (Config.DEBUG) {
+                                System.out.println(result);
+                            }
+
+                            // selectively parse, different thread?
+                            Gson gson = new Gson();
+                            Type collectionType = new TypeToken<List<UnsplashResponse>>() {}.getType();
+                            List<UnsplashListResponse> responses = (List<UnsplashListResponse>) new Gson().fromJson(result, collectionType);
+
+                            FileUtil.persistResponse(DateUtil.getTimestamp() + "_" + _context, result);
+
+                            // perist payloads
+                            UnsplashResponse response = null;
+                            Iterator it = responses.iterator();
+                            while (it.hasNext() && REQUEST_COUNT < Config.PERIODIC_REQUEST_LIMIT) {
+                                response = (UnsplashResponse) it.next();
+
+                                UnsplashApiPhoto.perform(response.getId());
+
+                                // @note: it seems that another request for the same photo's metadata may not count against API usage...?
+                                ++REQUEST_COUNT; 
+
+                                //usernames.add(response.getUser().getUsername());
+
+                            }
+
+                            EntityUtils.consume(entity1);                            
                         }
-
-                        // selectively parse, different thread?
-                        Gson gson = new Gson();
-                        Type collectionType = new TypeToken<List<UnsplashResponse>>() {}.getType();
-                        List<UnsplashListResponse> responses = (List<UnsplashListResponse>) new Gson().fromJson(result, collectionType);
-
-                        FileUtil.persistResponse(DateUtil.getTimestamp() + "_" + _context, result);
-
-                        // perist payloads
-                        UnsplashResponse response = null;
-                        Iterator it = responses.iterator();
-                        while (it.hasNext() && REQUEST_COUNT < Config.PERIODIC_REQUEST_LIMIT) {
-                            response = (UnsplashResponse) it.next();
-                            
-                            UnsplashApiPhoto.perform(response.getId());
-                            
-                            // @note: it seems that another request for the same photo's metadata does not count against API usage...?
-                            // ++REQUEST_COUNT; 
-
-                            //usernames.add(response.getUser().getUsername());
-
-                        }
-
-                        EntityUtils.consume(entity1);
-                    }                            
+                        
+                    }                         
                     
                 }          
                                                

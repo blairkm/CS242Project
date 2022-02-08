@@ -1,9 +1,9 @@
 package edu.ucr.cs242.project;
 
-import edu.ucr.cs242.project.util.DateUtil;
 import java.io.File;
-import edu.ucr.cs242.project.util.StringUtil;
 import java.util.Date;
+import edu.ucr.cs242.project.util.DateUtil;
+import edu.ucr.cs242.project.util.StringUtil;
 
 /**
  *

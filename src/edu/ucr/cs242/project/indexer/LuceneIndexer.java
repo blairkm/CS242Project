@@ -27,40 +27,45 @@ public class LuceneIndexer {
     IndexWriter indexWriter;
 
     /* create LuceneIndexer object */
-    public LuceneIndexer(String indexPath, String jsonFilePath){
+    public LuceneIndexer(String indexPath, String jsonFilePath) {
         this.indexPath = indexPath;
         this.jsonFilePath = jsonFilePath;
     }
-    
+
     public static void perform(String _jsonFilepath) {
         try {
             LuceneIndexer Indexer = new LuceneIndexer(Config.INDEXED_ARCHIVE_FILEPATH, _jsonFilepath);
-            Indexer.createIndex();                    
+            Indexer.createIndex();
         } catch (IOException ioex) {
-            ioex.printStackTrace(System.err);
+            // ioex.printStackTrace(System.err);
         } catch (ParseException pex) {
-            pex.printStackTrace(System.err);
-        }        
+            // pex.printStackTrace(System.err);
+        }
     }
 
     /* Parse the JSON file */
     public JSONArray JSONFileParse() throws IOException, ParseException {
 
-        // get JSON file
+        JSONArray arrayObjects = new JSONArray();
+
+        // Get JSON file
         FileReader reader = new FileReader(jsonFilePath);
 
-        //Parse JSON file
+        // Parse JSON file
         JSONParser parser = new JSONParser();
-        Object fileObjects = parser.parse(reader);
-        JSONArray arrayObjects= new JSONArray();
-        arrayObjects.add(fileObjects);
+        try {
+            Object fileObjects = parser.parse(reader);
+            arrayObjects.add(fileObjects);
+        } catch (Exception ex) {
+            // ex.printStackTrace(System.err);
+        }
 
         return arrayObjects;
     }
 
     /* index opener */
-    public void openIndex(){
-        try{
+    public void openIndex() {
+        try {
             Directory dir = FSDirectory.open(Paths.get(indexPath));
             Analyzer analyzer = new StandardAnalyzer();
             IndexWriterConfig iwc = new IndexWriterConfig(analyzer);
@@ -69,53 +74,51 @@ public class LuceneIndexer {
             if (FileUtil.isDirectoryEmpty(Config.INDEXED_ARCHIVE_FILEPATH)) {
                 iwc.setOpenMode(IndexWriterConfig.OpenMode.CREATE);
             } else {
-                iwc.setOpenMode(IndexWriterConfig.OpenMode.APPEND);    
+                iwc.setOpenMode(IndexWriterConfig.OpenMode.APPEND);
             }
-            
+
             indexWriter = new IndexWriter(dir, iwc);
 
-        } catch (Exception e){
+        } catch (Exception e) {
             System.err.println("Error opening the index. " + e.getMessage());
         }
     }
 
-    public void addDocuments(JSONArray jsonObjects){
-        for(JSONObject object : (List<JSONObject>) jsonObjects){
+    public void addDocuments(JSONArray jsonObjects) {
+        for (JSONObject object : (List<JSONObject>) jsonObjects) {
 
             // create new document
             Document doc = new Document();
 
             // for each field, add as a stringField to the document
-            
-            for(String field : (Set<String>) object.keySet()){
+            for (String field : (Set<String>) object.keySet()) {
                 System.out.println(field);
                 try {
                     Class type = object.get(field).getClass();
-                    if(type.equals(String.class)){
-                        doc.add(new StringField(field, (String)object.get(field), Field.Store.YES));
-                    }
-                    else if(type.equals(Boolean.class) | type.equals(Long.class) | type.equals(Double.class)){
+                    if (type.equals(String.class)) {
+                        doc.add(new StringField(field, (String) object.get(field), Field.Store.YES));
+                    } else if (type.equals(Boolean.class) | type.equals(Long.class) | type.equals(Double.class)) {
                         doc.add(new StringField(field, object.get(field).toString(), Field.Store.YES));
                     }
                 } catch (Exception ex) {
                     //ex.printStackTrace(System.err);
-                }                
+                }
             }
-            try{
+            try {
                 System.out.println(doc);
                 indexWriter.addDocument(doc);
-            } catch (IOException exception){
+            } catch (IOException exception) {
                 System.err.println("Error adding documents to index." + exception.getMessage());
             }
         }
     }
 
     /* commit and close the index */
-    public void finish(){
-        try{
+    public void finish() {
+        try {
             indexWriter.commit();
             indexWriter.close();
-        } catch (IOException e){
+        } catch (IOException e) {
             System.err.println("A problem was encountered when closing the index: " + e.getMessage());
         }
     }
