@@ -1,22 +1,20 @@
 package edu.ucr.cs242.project;
 
+import edu.ucr.cs242.project.util.DateUtil;
 import java.io.File;
+import edu.ucr.cs242.project.util.StringUtil;
+import java.util.Date;
 
 /**
  *
  * @author rehmke
  */
 public class Main {
-    
-    /*    
-        @setup
-
-        1) Update value assigned to Config.UNSPLASH_ACCESS_KEY with a plain-text Unsplash Access Key or an encrypted Unsplash Access Key (see EncDec.java)
-        2) Update value assigned to Config.ARCHIVE_FILEPATH_ROOT with a valid download directory target
-    
-    */    
  
     public static void main(String[] args) {
+        
+        StringUtil.announce("* Starting at " + DateUtil.getFormattedDate(new Date(), "h:mm:ss a") + "...");
+        
         init();
 
         // source: random feed
@@ -24,6 +22,8 @@ public class Main {
         
         // source: editorial feed
         UnsplashApiCrawler.perform();
+        
+        StringUtil.announce("* Finishing at " + DateUtil.getFormattedDate(new Date(), "h:mm:ss a") + "...");
                 
     }
     

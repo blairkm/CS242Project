@@ -13,7 +13,10 @@ import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import edu.ucr.cs242.project.json.UnsplashListResponse;
 import edu.ucr.cs242.project.json.UnsplashResponse;
+import edu.ucr.cs242.project.util.DateUtil;
+import edu.ucr.cs242.project.util.StringUtil;
 import java.lang.reflect.Type;
+import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
 
@@ -92,10 +95,13 @@ public class UnsplashApiCrawler {
                     
                 }          
                                                
-
                 if (REQUEST_COUNT >= Config.PERIODIC_REQUEST_LIMIT || Config.DELAY_CODES.contains(statusCode)) {
                     if (Config.DEBUG) {
-                        announce("! Delaying due to status code " + statusCode + "...");
+                        if (Config.DELAY_CODES.contains(statusCode)) {
+                            StringUtil.announce("! Delaying at " + DateUtil.getFormattedDate(new Date(), "h:mm:ss a") + " due to status code: " + statusCode + "...");    
+                        } else if (REQUEST_COUNT >= Config.PERIODIC_REQUEST_LIMIT) {
+                            StringUtil.announce("! Delaying at " + DateUtil.getFormattedDate(new Date(), "h:mm:ss a") + " due to API limit: " + REQUEST_COUNT + "/" + Config.PERIODIC_REQUEST_LIMIT + "...");    
+                        }                        
                     }
                     try {
                         Thread.sleep(Config.REQUEST_DELAY_LIMIT);
@@ -130,10 +136,6 @@ public class UnsplashApiCrawler {
             ioex.printStackTrace(System.err);
         }
 
-    }
-
-    private static void announce(String _val) {
-        System.out.println(_val);
     }
 
 }

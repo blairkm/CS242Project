@@ -4,6 +4,7 @@ import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import edu.ucr.cs242.project.json.UnsplashListResponse;
 import edu.ucr.cs242.project.json.UnsplashResponse;
+import edu.ucr.cs242.project.util.StringUtil;
 import java.io.IOException;
 import java.lang.reflect.Type;
 import java.nio.charset.StandardCharsets;
@@ -70,7 +71,7 @@ public class UnsplashApiUser {
 
                 if (Config.DELAY_CODES.contains(statusCode)) {
                     if (Config.DEBUG) {
-                        announce("! Delaying due to status code " + statusCode + "...");
+                        StringUtil.announce("! Delaying due to status code " + statusCode + "...");
                     }
                     try {
                         Thread.sleep(Config.REQUEST_DELAY_LIMIT);
@@ -91,10 +92,6 @@ public class UnsplashApiUser {
             ioex.printStackTrace(System.err);
         }
 
-    }
-
-    private static void announce(String _val) {
-        System.out.println(_val);
     }
         
 }

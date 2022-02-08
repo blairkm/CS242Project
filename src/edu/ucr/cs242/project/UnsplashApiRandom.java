@@ -11,6 +11,7 @@ import org.apache.hc.core5.http.HttpEntity;
 import org.apache.hc.core5.http.io.entity.EntityUtils;
 import com.google.gson.Gson;
 import edu.ucr.cs242.project.json.UnsplashResponse;
+import edu.ucr.cs242.project.util.StringUtil;
 
 /**
  *
@@ -56,7 +57,7 @@ public class UnsplashApiRandom {
 
                 if (Config.DELAY_CODES.contains(statusCode)) {
                     if (Config.DEBUG) {
-                        announce("! Delaying due to status code " + statusCode + "...");
+                        StringUtil.announce("! Delaying due to status code " + statusCode + "...");
                     }
                     try {
                         Thread.sleep(Config.REQUEST_DELAY_LIMIT);
@@ -77,10 +78,6 @@ public class UnsplashApiRandom {
             ioex.printStackTrace(System.err);
         }
 
-    }
-
-    private static void announce(String _val) {
-        System.out.println(_val);
     }
 
 }

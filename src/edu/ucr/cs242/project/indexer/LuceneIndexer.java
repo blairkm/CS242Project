@@ -64,8 +64,7 @@ public class LuceneIndexer {
             Analyzer analyzer = new StandardAnalyzer();
             IndexWriterConfig iwc = new IndexWriterConfig(analyzer);
 
-            // overwrite the directory
-            iwc.setOpenMode(IndexWriterConfig.OpenMode.CREATE);
+            iwc.setOpenMode(IndexWriterConfig.OpenMode.CREATE_OR_APPEND);
 
             indexWriter = new IndexWriter(dir, iwc);
 

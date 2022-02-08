@@ -4,8 +4,11 @@ import com.google.gson.Gson;
 import edu.ucr.cs242.project.indexer.LuceneIndexer;
 import edu.ucr.cs242.project.json.IndexableResult;
 import edu.ucr.cs242.project.json.UnsplashResponse;
+import edu.ucr.cs242.project.util.DateUtil;
+import edu.ucr.cs242.project.util.StringUtil;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
+import java.util.Date;
 import org.apache.commons.io.IOUtils;
 import org.apache.hc.client5.http.classic.methods.HttpGet;
 import org.apache.hc.client5.http.impl.classic.CloseableHttpClient;
@@ -87,7 +90,7 @@ public class UnsplashApiPhoto {
 
                 if (Config.DELAY_CODES.contains(statusCode)) {
                     if (Config.DEBUG) {
-                        announce("! Delaying due to status code " + statusCode + "...");
+                        StringUtil.announce("! Delaying at " + DateUtil.getFormattedDate(new Date(), "h:mm:ss a") + " due to status code " + statusCode + "...");
                     }
                     try {
                         Thread.sleep(Config.REQUEST_DELAY_LIMIT);
@@ -108,10 +111,6 @@ public class UnsplashApiPhoto {
             ioex.printStackTrace(System.err);
         }
 
-    }
-
-    private static void announce(String _val) {
-        System.out.println(_val);
     }
         
 }

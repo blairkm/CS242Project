@@ -19,7 +19,7 @@ public class Config {
     public static final String UNSPLASH_API_USER_ENDPOINT = "https://api.unsplash.com" + "/users";
     public static final String UNSPLASH_API_ENDPOINT = UNSPLASH_API_RANDOM_ENDPOINT;  
     
-    public static final String UNSPLASH_ACCESS_KEY = EncDec.dec("UNSPLASH_ACCESS_KEY_HERE");
+    public static final String UNSPLASH_ACCESS_KEY = EncDec.dec("hbb+zVyFlaOpaRpR3ZGWsT0E8UB9NhAcJdBiswmd8s+o7Ikl56ap3wJLlaOusaOtTQgjQvrw66w2w5LneSAexSnbNMS6wmf4T4Qycv2HT/U=");
     public static final String UNSPLASH_SECRET_KEY = null;
     
     public static final String ARCHIVE_FILEPATH_ROOT = "/Users/rehmke/development/school/Cs242/DATA";
