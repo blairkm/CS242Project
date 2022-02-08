@@ -89,6 +89,19 @@ public class FileUtil {
         
     }
     
+    // @note: _duration = ms
+    public static void persistIndexPerformance(String _id, long _duration) {
+        try {
+            
+            // write metadata to file
+            File file = new File(Config.INDEXING_PERFORMANCE_ARCHIVE);
+            FileUtils.writeStringToFile(file, _id + "," + _duration + System.getProperty("line.separator"), StandardCharsets.UTF_8, true);
+            
+        } catch (IOException ioex) {
+            ioex.printStackTrace(System.err);
+        }        
+    }
+    
     public static boolean isDirectoryEmpty(String _filepath) {
         boolean isEmpty = false;        
         File f = new File(_filepath);
@@ -96,6 +109,14 @@ public class FileUtil {
             isEmpty = true;
         }        
         return isEmpty;      
+    }
+    
+    public static boolean isAlreadyReceived(String _photoId) {
+        boolean isReceived = false;
+        if (new File(Config.METADATA_ARCHIVE_FILEPATH + System.getProperty("file.separator") + _photoId).exists()) {
+            isReceived = true;
+        }
+        return isReceived;
     }
     
 }

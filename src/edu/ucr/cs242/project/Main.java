@@ -15,7 +15,7 @@ public class Main {
         
         StringUtil.announce("* Starting at " + DateUtil.getFormattedDate(new Date(), "h:mm:ss a") + "...");
         
-        init();
+        init(args);
 
         // source: random feed
         // UnsplashApiRandom.perform();
@@ -27,7 +27,8 @@ public class Main {
                 
     }
     
-    private static void init() {
+    private static void init(String[] _args) {
+        
         try {
             new File(Config.METADATA_ARCHIVE_FILEPATH).mkdirs();
             new File(Config.IMAGE_ARCHIVE_FILEPATH).mkdirs();
@@ -35,7 +36,8 @@ public class Main {
             new File(Config.INDEXED_ARCHIVE_FILEPATH).mkdirs();
         } catch (Exception ex) {
             ex.printStackTrace(System.err);
-        }
+        }        
+        
     }
     
 }

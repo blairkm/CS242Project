@@ -14,11 +14,13 @@ import com.google.gson.reflect.TypeToken;
 import edu.ucr.cs242.project.json.UnsplashListResponse;
 import edu.ucr.cs242.project.json.UnsplashResponse;
 import edu.ucr.cs242.project.util.DateUtil;
+import edu.ucr.cs242.project.util.RndUtil;
 import edu.ucr.cs242.project.util.StringUtil;
 import java.lang.reflect.Type;
 import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
+import org.apache.hc.core5.http.ProtocolException;
 
 /**
  *
@@ -42,7 +44,7 @@ public class UnsplashApiCrawler {
             
             // download list of photos by context...
             
-            HttpGet httpGet = new HttpGet(Config.UNSPLASH_API_LATEST_ENDPOINT + "?" + "per_page=" + Config.MAX_PHOTO_RESPONSE_COUNT + "&" + "order_by=" + _context);
+            HttpGet httpGet = new HttpGet(Config.UNSPLASH_API_LATEST_ENDPOINT + "?" + "page=" + RndUtil.getRandomNumber() + "&per_page=" + Config.MAX_PHOTO_RESPONSE_COUNT + "&" + "order_by=" + _context);
             httpGet.setHeader("Accept-Version", "v1");
             httpGet.setHeader("Authorization", "Client-ID " + Config.UNSPLASH_ACCESS_KEY);
             
@@ -56,11 +58,18 @@ public class UnsplashApiCrawler {
 
                     try (CloseableHttpResponse response1 = httpclient.execute(httpGet)) {
                         
-                        ++REQUEST_COUNT;
+                        //++REQUEST_COUNT;
 
                         statusCode = response1.getCode();
                         if (Config.DEBUG) {
                             System.out.println(response1.getCode() + " " + response1.getReasonPhrase());
+                            try {
+                                System.out.println("- Reported Limit: " + response1.getHeader("X-Ratelimit-Limit").getValue());
+                                System.out.println("- Reported Remaining: " + response1.getHeader("X-Ratelimit-Remaining").getValue());
+                                REQUEST_COUNT = Integer.parseInt(""+response1.getHeader("X-Ratelimit-Remaining").getValue());
+                            } catch (ProtocolException pex) {
+                                pex.printStackTrace(System.err);
+                            }
                         }
 
                         if (statusCode == 200) {
@@ -83,10 +92,14 @@ public class UnsplashApiCrawler {
                             while (it.hasNext() && REQUEST_COUNT < Config.PERIODIC_REQUEST_LIMIT) {
                                 response = (UnsplashResponse) it.next();
 
-                                UnsplashApiPhoto.perform(response.getId());
+                                if (!FileUtil.isAlreadyReceived(response.getId())) {
+                                    REQUEST_COUNT = UnsplashApiPhoto.perform(response.getId());    
+                                } else {
+                                    System.out.println("- Skipping item: " + response.getId() + "...");
+                                }
 
                                 // @note: it seems that another request for the same photo's metadata may not count against API usage...?
-                                ++REQUEST_COUNT; 
+                                //++REQUEST_COUNT; 
 
                                 //usernames.add(response.getUser().getUsername());
 

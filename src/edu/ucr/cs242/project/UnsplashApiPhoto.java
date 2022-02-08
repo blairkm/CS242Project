@@ -8,6 +8,7 @@ import edu.ucr.cs242.project.util.DateUtil;
 import edu.ucr.cs242.project.util.StringUtil;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
+import java.sql.Timestamp;
 import java.util.Date;
 import org.apache.commons.io.IOUtils;
 import org.apache.hc.client5.http.classic.methods.HttpGet;
@@ -15,6 +16,7 @@ import org.apache.hc.client5.http.impl.classic.CloseableHttpClient;
 import org.apache.hc.client5.http.impl.classic.CloseableHttpResponse;
 import org.apache.hc.client5.http.impl.classic.HttpClients;
 import org.apache.hc.core5.http.HttpEntity;
+import org.apache.hc.core5.http.ProtocolException;
 import org.apache.hc.core5.http.io.entity.EntityUtils;
 
 /**
@@ -23,7 +25,9 @@ import org.apache.hc.core5.http.io.entity.EntityUtils;
  */
 public class UnsplashApiPhoto { 
 
-    protected static void perform(String _photoId) {
+    protected static int perform(String _photoId) {
+        
+        int requestsRemaining = -1;
 
         try (CloseableHttpClient httpclient = HttpClients.createDefault()) {
 
@@ -40,6 +44,13 @@ public class UnsplashApiPhoto {
                     statusCode = response1.getCode();
                     if (Config.DEBUG) {
                         System.out.println(response1.getCode() + " " + response1.getReasonPhrase());
+                        try {
+                            System.out.println("- Reported Limit: " + response1.getHeader("X-Ratelimit-Limit").getValue());
+                            System.out.println("- Reported Remaining: " + response1.getHeader("X-Ratelimit-Remaining").getValue());
+                            requestsRemaining = Integer.parseInt(""+response1.getHeader("X-Ratelimit-Remaining").getValue());
+                        } catch (ProtocolException pex) {
+                            pex.printStackTrace(System.err);
+                        }
                     }
                     
                     if (statusCode == 200) {
@@ -83,9 +94,15 @@ public class UnsplashApiPhoto {
 
                         FileUtil.persistIndexable(response.getId(), new Gson().toJson(ir));                    
 
-                        // Index simplified response object
+                        // Index simplified response object, and capture the time required to do so...
+                        Timestamp indexStart = new Timestamp(new Date().getTime());
                         LuceneIndexer.perform(Config.INDEXABLE_ARCHIVE_FILEPATH + System.getProperty("file.separator") + response.getId());
-
+                        Timestamp indexEnd = new Timestamp(new Date().getTime());
+                        FileUtil.persistIndexPerformance(response.getId(), indexEnd.getTime()-indexStart.getTime());
+                        if (Config.DEBUG) {
+                            System.out.println("- Item " + response.getId() + " was indexed in " + (indexEnd.getTime()-indexStart.getTime()) + " milliseconds.");
+                        }
+                                
                         EntityUtils.consume(entity1);                        
                     }
                     
@@ -113,7 +130,8 @@ public class UnsplashApiPhoto {
         } catch (IOException ioex) {
             ioex.printStackTrace(System.err);
         }
-
+        
+        return requestsRemaining;
     }
         
 }
