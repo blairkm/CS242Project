@@ -17,7 +17,7 @@ import org.apache.commons.io.FileUtils;
  */
 public class FileUtil {
 
-    protected static void persistMetadata(String _id, String _val) {
+    protected static void persistResponse(String _id, String _val) {
         
         try {
             
@@ -30,6 +30,34 @@ public class FileUtil {
         }
         
     }
+    
+    protected static void persistMetadata(String _vals) {
+        
+        try {
+            
+            // write metadata to file
+            File file = new File(Config.METADATA_ARCHIVE);
+            FileUtils.writeStringToFile(file, _vals, StandardCharsets.UTF_8, true);            
+            
+        } catch (IOException ioex) {
+            ioex.printStackTrace(System.err);
+        }
+        
+    }    
+    
+    protected static void persistIndexable(String _id, String _val) {
+        
+        try {
+            
+            // write indexable to file
+            File file = new File(Config.INDEXABLE_ARCHIVE_FILEPATH + System.getProperty("file.separator") + _id);
+            FileUtils.writeStringToFile(file, _val, StandardCharsets.UTF_8, true);            
+            
+        } catch (IOException ioex) {
+            ioex.printStackTrace(System.err);
+        }
+        
+    }     
     
     protected static void persistImage(String _id, String _url) {
                 

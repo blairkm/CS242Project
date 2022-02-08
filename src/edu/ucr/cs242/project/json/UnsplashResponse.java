@@ -46,10 +46,32 @@ public class UnsplashResponse {
     private String description = "";        
     
     @SerializedName("alt_description")
-    @Expose            
-    private String alt_description = "";    
+    @Expose
+    private String alt_description = "";
     
-    private Urls urls = null;
+    @SerializedName("urls")
+    @Expose        
+    private Urls urls = new Urls();
+    
+    @SerializedName("user")
+    @Expose        
+    private User user = new User();
+
+    @SerializedName("location")
+    @Expose        
+    private Location location = new Location();    
+
+    @SerializedName("exif")
+    @Expose    
+    private Exif exif = new Exif();
+    
+    @SerializedName("views")
+    @Expose
+    private int views = -1;
+
+    @SerializedName("downloads")
+    @Expose
+    private int downloads = -1;
 
     /**
      * @return the id
@@ -203,6 +225,76 @@ public class UnsplashResponse {
      */
     public void setUrls(Urls urls) {
         this.urls = urls;
+    }
+
+    /**
+     * @return the user
+     */
+    public User getUser() {
+        return user;
+    }
+
+    /**
+     * @param user the user to set
+     */
+    public void setUser(User user) {
+        this.user = user;
+    }
+
+    /**
+     * @return the exif
+     */
+    public Exif getExif() {
+        return exif;
+    }
+
+    /**
+     * @param exif the exif to set
+     */
+    public void setExif(Exif exif) {
+        this.exif = exif;
+    }
+
+    /**
+     * @return the views
+     */
+    public int getViews() {
+        return views;
+    }
+
+    /**
+     * @param views the views to set
+     */
+    public void setViews(int views) {
+        this.views = views;
+    }
+
+    /**
+     * @return the downloads
+     */
+    public int getDownloads() {
+        return downloads;
+    }
+
+    /**
+     * @param downloads the downloads to set
+     */
+    public void setDownloads(int downloads) {
+        this.downloads = downloads;
+    }
+
+    /**
+     * @return the location
+     */
+    public Location getLocation() {
+        return location;
+    }
+
+    /**
+     * @param location the location to set
+     */
+    public void setLocation(Location location) {
+        this.location = location;
     }
     
 }
