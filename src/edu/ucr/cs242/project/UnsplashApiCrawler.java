@@ -84,7 +84,8 @@ public class UnsplashApiCrawler {
                             
                             UnsplashApiPhoto.perform(response.getId());
                             
-                            ++REQUEST_COUNT;
+                            // @note: it seems that another request for the same photo's metadata does not count against API usage...?
+                            // ++REQUEST_COUNT; 
 
                             //usernames.add(response.getUser().getUsername());
 

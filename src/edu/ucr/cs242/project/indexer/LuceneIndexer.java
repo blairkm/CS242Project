@@ -1,6 +1,7 @@
 package edu.ucr.cs242.project.indexer;
 
 import edu.ucr.cs242.project.Config;
+import edu.ucr.cs242.project.FileUtil;
 import org.apache.lucene.analysis.Analyzer;
 import org.apache.lucene.analysis.standard.StandardAnalyzer;
 import org.apache.lucene.document.*;
@@ -64,8 +65,13 @@ public class LuceneIndexer {
             Analyzer analyzer = new StandardAnalyzer();
             IndexWriterConfig iwc = new IndexWriterConfig(analyzer);
 
-            iwc.setOpenMode(IndexWriterConfig.OpenMode.CREATE_OR_APPEND);
-
+            // @note: Unsure if OpenMode.CREATE_OR_APPEND is appropriate here, so checking manually...
+            if (FileUtil.isDirectoryEmpty(Config.INDEXED_ARCHIVE_FILEPATH)) {
+                iwc.setOpenMode(IndexWriterConfig.OpenMode.CREATE);
+            } else {
+                iwc.setOpenMode(IndexWriterConfig.OpenMode.APPEND);    
+            }
+            
             indexWriter = new IndexWriter(dir, iwc);
 
         } catch (Exception e){

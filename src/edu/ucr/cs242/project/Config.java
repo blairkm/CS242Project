@@ -30,7 +30,7 @@ public class Config {
     public static final String METADATA_ARCHIVE = ARCHIVE_FILEPATH_ROOT + System.getProperty("file.separator") + "METADATA.TXT";
     
     public static final int MAX_PHOTO_RESPONSE_COUNT = 999;
-    public static final int PERIODIC_REQUEST_LIMIT = 50;
+    public static final int PERIODIC_REQUEST_LIMIT = 25;
     
     public static final int REQUEST_DELAY_POLITE = 5000;
     public static final int REQUEST_DELAY_LIMIT = 60*60*1000;

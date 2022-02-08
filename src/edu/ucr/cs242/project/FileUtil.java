@@ -89,4 +89,13 @@ public class FileUtil {
         
     }
     
+    public static boolean isDirectoryEmpty(String _filepath) {
+        boolean isEmpty = false;        
+        File f = new File(_filepath);
+        if (f.listFiles().length == 0) {
+            isEmpty = true;
+        }        
+        return isEmpty;      
+    }
+    
 }
