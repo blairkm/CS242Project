@@ -25,7 +25,7 @@ public class UnsplashApiRandom {
 
             HttpGet httpGet = new HttpGet(Config.UNSPLASH_API_ENDPOINT);
             httpGet.setHeader("Accept-Version", "v1");
-            httpGet.setHeader("Authorization", "Client-ID " + Config.UNSPLASH_ACCESS_KEY);
+            httpGet.setHeader("Authorization", "Client-ID " + Config.getUnsplashAccessKey());
 
             int statusCode = -1;
             String result = "";

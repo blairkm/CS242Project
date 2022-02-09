@@ -33,7 +33,7 @@ public class UnsplashApiPhoto {
 
             HttpGet httpGet = new HttpGet(Config.UNSPLASH_API_PHOTOS_ENDPOINT + "/" + _photoId);
             httpGet.setHeader("Accept-Version", "v1");
-            httpGet.setHeader("Authorization", "Client-ID " + Config.UNSPLASH_ACCESS_KEY);
+            httpGet.setHeader("Authorization", "Client-ID " + Config.getUnsplashAccessKey());
 
             int statusCode = -1;
             String result = "";
@@ -66,7 +66,7 @@ public class UnsplashApiPhoto {
 
                         // perist payloads
                         FileUtil.persistResponse(response.getId(), result);
-                        FileUtil.persistImage(response.getId(), response.getUrls().getRegular()); // getFull()
+                        FileUtil.persistImage(response.getId(), response.getUrls().getRegular()); // getFull() // getRegular()
 
                         IndexableResult ir = new IndexableResult();
                         ir.setPhotoId(response.getId()); // id

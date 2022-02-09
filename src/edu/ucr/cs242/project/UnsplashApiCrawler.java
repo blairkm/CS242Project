@@ -44,9 +44,9 @@ public class UnsplashApiCrawler {
             
             // download list of photos by context...
             
-            HttpGet httpGet = new HttpGet(Config.UNSPLASH_API_LATEST_ENDPOINT + "?" + "page=" + RndUtil.getRandomNumber() + "&per_page=" + Config.MAX_PHOTO_RESPONSE_COUNT + "&" + "order_by=" + _context);
+            HttpGet httpGet = new HttpGet(Config.UNSPLASH_API_LATEST_ENDPOINT + "?" + "page=" + /*"3"*/ RndUtil.getRandomNumber() + "&per_page=" + Config.MAX_PHOTO_RESPONSE_COUNT + "&" + "order_by=" + _context);
             httpGet.setHeader("Accept-Version", "v1");
-            httpGet.setHeader("Authorization", "Client-ID " + Config.UNSPLASH_ACCESS_KEY);
+            httpGet.setHeader("Authorization", "Client-ID " + Config.getUnsplashAccessKey());
             
             //Set usernames = new HashSet();
 

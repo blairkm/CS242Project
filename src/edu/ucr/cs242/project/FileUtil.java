@@ -119,4 +119,8 @@ public class FileUtil {
         return isReceived;
     }
     
+    public static String getWorkingDirectory() {
+        return ""+System.getProperty("user.dir");
+    }
+    
 }

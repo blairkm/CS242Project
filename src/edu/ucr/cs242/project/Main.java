@@ -29,14 +29,19 @@ public class Main {
     
     private static void init(String[] _args) {
         
-        try {
-            new File(Config.METADATA_ARCHIVE_FILEPATH).mkdirs();
-            new File(Config.IMAGE_ARCHIVE_FILEPATH).mkdirs();
-            new File(Config.INDEXABLE_ARCHIVE_FILEPATH).mkdirs();
-            new File(Config.INDEXED_ARCHIVE_FILEPATH).mkdirs();
-        } catch (Exception ex) {
-            ex.printStackTrace(System.err);
-        }        
+        if (_args.length == 1) {
+            Config.setUnsplashAccessKey(_args[0]);
+            try {
+                new File(Config.METADATA_ARCHIVE_FILEPATH).mkdirs();
+                new File(Config.IMAGE_ARCHIVE_FILEPATH).mkdirs();
+                new File(Config.INDEXABLE_ARCHIVE_FILEPATH).mkdirs();
+                new File(Config.INDEXED_ARCHIVE_FILEPATH).mkdirs();
+            } catch (Exception ex) {
+                ex.printStackTrace(System.err);
+            }            
+        } else {
+            System.out.println("Error: An Unsplash Access Key is required to continue.");
+        }
         
     }
     
