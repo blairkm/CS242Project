@@ -19,10 +19,10 @@ public class Config {
     public static final String UNSPLASH_API_USER_ENDPOINT = "https://api.unsplash.com" + "/users";
     public static final String UNSPLASH_API_ENDPOINT = UNSPLASH_API_RANDOM_ENDPOINT;  
     
-    public static final String UNSPLASH_ACCESS_KEY = EncDec.dec("ENCRYPTED_UNSPLASH_ACCESS_KEY_HERE");
+    public static final String UNSPLASH_ACCESS_KEY = EncDec.dec("hbb+zVyFlaOpaRpR3ZGWsT0E8UB9NhAcJdBiswmd8s+o7Ikl56ap3wJLlaOusaOtTQgjQvrw66w2w5LneSAexSnbNMS6wmf4T4Qycv2HT/U=");
     public static final String UNSPLASH_SECRET_KEY = null;
     
-    public static final String ARCHIVE_FILEPATH_ROOT = "/TMP/CS242/PROJECT/OUTPUT";
+    public static final String ARCHIVE_FILEPATH_ROOT = "/Users/rehmke/development/school/Cs242/DATA";
     public static final String METADATA_ARCHIVE_FILEPATH = ARCHIVE_FILEPATH_ROOT + System.getProperty("file.separator") + "METADATA";
     public static final String IMAGE_ARCHIVE_FILEPATH = ARCHIVE_FILEPATH_ROOT + System.getProperty("file.separator") + "IMAGE";
     public static final String INDEXABLE_ARCHIVE_FILEPATH = ARCHIVE_FILEPATH_ROOT + System.getProperty("file.separator") + "INDEXABLE";
@@ -35,8 +35,8 @@ public class Config {
     public static final int RANDOM_NUMBER_FLOOR = 1;
     public static final int RANDOM_NUMBER_CEILING = 100;
     
-    public static final int REQUEST_DELAY_POLITE = 5000;
+    public static final int REQUEST_DELAY_POLITE = 3000;
     public static final int REQUEST_DELAY_LIMIT = 60*60*1000;
-    public static final List<Integer> DELAY_CODES = new ArrayList <>(Arrays.asList(403, 202,429));      
+    public static final List<Integer> DELAY_CODES = new ArrayList <>(Arrays.asList(403, 202, 429));      
     
 }

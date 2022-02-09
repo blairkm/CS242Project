@@ -62,7 +62,7 @@ public class UnsplashApiUser {
 
                         // id, urls.regular, user.username  
                         FileUtil.persistMetadata(response.getId() + " " + response.getUrls().getFull() + " " + response.getUser().getUsername() + System.getProperty("line.separator"));
-                        FileUtil.persistImage(response.getId(), response.getUrls().getFull());
+                        FileUtil.persistImage(response.getId(), response.getUrls().getRegular()); // getFull()
 
                     }
 

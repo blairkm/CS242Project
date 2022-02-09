@@ -50,7 +50,7 @@ public class UnsplashApiRandom {
 
                     // perist payloads
                     FileUtil.persistResponse(response.getId(), result);
-                    FileUtil.persistImage(response.getId(), response.getUrls().getFull());
+                    FileUtil.persistImage(response.getId(), response.getUrls().getRegular()); // getFull()
 
                     EntityUtils.consume(entity1);
                 }

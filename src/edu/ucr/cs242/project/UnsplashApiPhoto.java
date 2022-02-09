@@ -66,7 +66,7 @@ public class UnsplashApiPhoto {
 
                         // perist payloads
                         FileUtil.persistResponse(response.getId(), result);
-                        FileUtil.persistImage(response.getId(), response.getUrls().getFull());                    
+                        FileUtil.persistImage(response.getId(), response.getUrls().getRegular()); // getFull()
 
                         IndexableResult ir = new IndexableResult();
                         ir.setPhotoId(response.getId()); // id
