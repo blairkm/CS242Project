@@ -12,3 +12,6 @@ References
 
 Data Sample
 - https://drive.google.com/file/d/1dUvj1lZ_EJV7Ybx5gzDZ-_Z0E3tX748B/view?usp=sharing
+
+1GB Data
+- https://drive.google.com/file/d/1X_ExHrEwod957MS3_9PpNNI9rLISxVrP/view?usp=sharing
