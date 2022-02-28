@@ -38,7 +38,7 @@ public class InvertedIndex {
             }
             JSONObject jsonObject = (JSONObject) obj;
 
-            String DocID = (String) jsonObject.get("id");
+            String DocID = (String) jsonObject.get("photoId");
             ID.set(DocID);
 
 
@@ -62,32 +62,6 @@ public class InvertedIndex {
                 }
             }
         }
-
-/*        public ArrayList <String> JSONHelper (JSONObject jobject){
-
-            ArrayList <String> pair = new ArrayList<>();
-
-            for (Object myKey : jobject.keySet()) {
-                String keyStr = (String) myKey;
-                Object keyValue = jobject.get(keyStr);
-
-                if (keyValue instanceof JSONObject) {
-
-                    JSONHelper((JSONObject) keyValue);
-
-                } else if (keyValue instanceof JSONArray myArray) {
-
-                    for(int i = 0; i < myArray.size(); i++){
-
-                        JSONHelper((JSONObject) myArray.get(i));
-                    }
-                } else if (keyValue != null) {
-                    pair.add(keyStr);
-                    pair.add(keyValue.toString());
-                }
-            }
-            return pair;
-        }*/
     }
 
     public static class IntSumReducer
@@ -98,10 +72,7 @@ public class InvertedIndex {
         ) throws IOException, InterruptedException {
 
             HashMap<String,Integer> map = new HashMap<String,Integer>();
-      /*
-      Iterable through all the values available with a key [word] and add them together and give the
-      final result as the key and sum of its values along with the DocID.
-      */
+
             for (Text val : values) {
                 if (map.containsKey(val.toString())) {
                     map.put(val.toString(), map.get(val.toString()) + 1);
@@ -125,7 +96,7 @@ public class InvertedIndex {
         job.setReducerClass(IntSumReducer.class);
         job.setOutputKeyClass(Text.class);
         job.setOutputValueClass(Text.class);
-        FileInputFormat.addInputPath(job, new Path("C:/Users/MachOne/Desktop/CS242/JSON_TEST_FILE"));
+        FileInputFormat.addInputPath(job, new Path("C:/Users/MachOne/Desktop/CS242/JSON_TEST_FILE_2"));
         FileOutputFormat.setOutputPath(job, new Path("C:/Users/MachOne/Desktop/CS242/mapReduce_Index"));
         System.exit(job.waitForCompletion(true) ? 0 : 1);
     }
