@@ -1,61 +1,109 @@
 package edu.ucr.cs242.project.InvertedIndex;
 
-import org.apache.hadoop.io.LongWritable;
+import java.io.IOException;
+import java.util.HashMap;
+
+import org.apache.hadoop.conf.Configuration;
+import org.apache.hadoop.fs.Path;
 import org.apache.hadoop.io.Text;
 import org.apache.hadoop.mapreduce.Job;
 import org.apache.hadoop.mapreduce.Mapper;
 import org.apache.hadoop.mapreduce.Reducer;
-import org.json.simple.JSONObject;
-import org.json.simple.parser.JSONParser;
-import org.apache.hadoop.fs.Path;
-
 import org.apache.hadoop.mapreduce.lib.input.FileInputFormat;
 import org.apache.hadoop.mapreduce.lib.output.FileOutputFormat;
 
-import java.io.IOException;
-import org.apache.hadoop.conf.Configuration;
-import java.text.ParseException;
-import java.util.HashMap;
-import java.util.Iterator;
+import org.json.simple.JSONArray;
+import org.json.simple.JSONObject;
+import org.json.simple.parser.JSONParser;
+import org.json.simple.parser.ParseException;
+
 
 public class InvertedIndex {
 
-    public class JSONMapper
-        extends Mapper<Object, Text, Text, Text>{
+    public static class TokenizerMapper
+            extends Mapper<Object, Text, Text, Text> {
 
-        private Text word = new Text();
+        private final Text ID = new Text();
 
-        public void map(LongWritable key, Text value, Context context) throws IOException, ParseException, org.json.simple.parser.ParseException {
+        public void map(Object key, Text value, Context context
+        ) throws IOException, InterruptedException {
+
             JSONParser parser = new JSONParser();
 
-            Object obj = parser.parse(value.toString());
+            Object obj = null;
+            try {
+                obj = parser.parse(value.toString());
+            } catch (ParseException e) {
+                e.printStackTrace();
+            }
             JSONObject jsonObject = (JSONObject) obj;
 
             String DocID = (String) jsonObject.get("id");
+            ID.set(DocID);
 
-            for (Object mykey: jsonObject.keySet()){
-                Text mapValue = new Text();
-                if(jsonObject.get(mykey) != null){
-                    mapValue.set(jsonObject.get(mykey).toString());
-                }
-                try {
-                    context.write(new Text(DocID), new Text(mapValue));
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
+
+            for (Object myKey : jsonObject.keySet()) {
+                String keyStr = (String) myKey;
+                Object keyValue = jsonObject.get(keyStr);
+
+                if (keyValue instanceof JSONObject) {
+
+                    context.write(new Text(keyValue.toString()), new Text(ID));
+
+                } else if (keyValue instanceof JSONArray myArray) {
+
+                    for(int i = 0; i < myArray.size(); i++){
+
+                        context.write(new Text(myArray.get(i).toString()), new Text(ID));
+                    }
+                } else if (keyValue != null) {
+                     context.write(new Text(keyValue.toString()), new Text(ID));
+
                 }
             }
         }
+
+/*        public ArrayList <String> JSONHelper (JSONObject jobject){
+
+            ArrayList <String> pair = new ArrayList<>();
+
+            for (Object myKey : jobject.keySet()) {
+                String keyStr = (String) myKey;
+                Object keyValue = jobject.get(keyStr);
+
+                if (keyValue instanceof JSONObject) {
+
+                    JSONHelper((JSONObject) keyValue);
+
+                } else if (keyValue instanceof JSONArray myArray) {
+
+                    for(int i = 0; i < myArray.size(); i++){
+
+                        JSONHelper((JSONObject) myArray.get(i));
+                    }
+                } else if (keyValue != null) {
+                    pair.add(keyStr);
+                    pair.add(keyValue.toString());
+                }
+            }
+            return pair;
+        }*/
     }
 
-    public class myReducer
-        extends Reducer<Text, Text, Text, Text>{
+    public static class IntSumReducer
+            extends Reducer<Text, Text, Text, Text> {
 
-        public void myreduce(Text key, Iterable<Text> values, Context context) throws IOException, InterruptedException {
+        public void reduce(Text key, Iterable<Text> values,
+                           Context context
+        ) throws IOException, InterruptedException {
 
             HashMap<String,Integer> map = new HashMap<String,Integer>();
-
-            for(Text val: values){
-                if(map.containsKey(val.toString())){
+      /*
+      Iterable through all the values available with a key [word] and add them together and give the
+      final result as the key and sum of its values along with the DocID.
+      */
+            for (Text val : values) {
+                if (map.containsKey(val.toString())) {
                     map.put(val.toString(), map.get(val.toString()) + 1);
                 } else {
                     map.put(val.toString(), 1);
@@ -69,21 +117,16 @@ public class InvertedIndex {
         }
     }
 
-    public static void main(String[] args) throws Exception{
+    public static void main(String[] args) throws Exception {
         Configuration conf = new Configuration();
-        Job job = Job.getInstance(conf, "inverted index");
+        Job job = Job.getInstance(conf, "word count");
         job.setJarByClass(InvertedIndex.class);
-        job.setMapperClass(JSONMapper.class);
-
-        job.setReducerClass(myReducer.class);
+        job.setMapperClass(TokenizerMapper.class);
+        job.setReducerClass(IntSumReducer.class);
         job.setOutputKeyClass(Text.class);
         job.setOutputValueClass(Text.class);
         FileInputFormat.addInputPath(job, new Path("C:/Users/MachOne/Desktop/CS242/JSON_TEST_FILE"));
         FileOutputFormat.setOutputPath(job, new Path("C:/Users/MachOne/Desktop/CS242/mapReduce_Index"));
-        boolean success = job.waitForCompletion(true);
-        System.exit(success ? 0 : 1);
-
+        System.exit(job.waitForCompletion(true) ? 0 : 1);
     }
-
-
-        }
+}
