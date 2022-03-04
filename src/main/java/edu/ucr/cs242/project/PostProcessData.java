@@ -13,14 +13,13 @@ import org.apache.commons.lang3.StringUtils;
 public class PostProcessData {
     
     public static void main(String[] args) {
-        perform();        
+        //perform();        
+        perform2();        
     }
     
     private static void perform() {
         
         new File(Config.INDEXABLE_PROCESSED).mkdirs();
-        
-        //File dest = new File(INDEXABLE_PROCESSED);
         
         List files = FileUtil.getFiles(Config.INDEXABLE_ARCHIVE_FILEPATH, false);
         String currentFilepath = "";
@@ -32,6 +31,24 @@ public class PostProcessData {
             fileContent = FileUtil.readFileToString(currentFilepath);
             FileUtil.persistIndexableProcessed(StringUtils.replace(currentFile.getName(), "_", ""), StringUtil.scrub(fileContent));
         }      
+        
+    }
+    
+    private static void perform2() {
+        
+        new File(Config.IMAGE_ARCHIVE_PROCESSED).mkdirs();
+        
+        List files = FileUtil.getFiles(Config.IMAGE_ARCHIVE_FILEPATH, false);
+        String currentFilepath = "";
+        String currentFilename = "";
+        Iterator it = files.iterator();
+        while (it.hasNext()) {
+            currentFilepath = ""+it.next();
+            File currentFile = new File(currentFilepath);
+            currentFilename = currentFile.getName();            
+            FileUtil.copyFile(new File(currentFilepath), new File(Config.IMAGE_ARCHIVE_PROCESSED + System.getProperty("file.separator") + StringUtils.replace(currentFilename, "_", "")));            
+        }
+        
         
     }
     
