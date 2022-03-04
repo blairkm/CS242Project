@@ -29,11 +29,12 @@ public class Config {
     public static final String INDEXED_ARCHIVE_FILEPATH = ARCHIVE_FILEPATH_ROOT + System.getProperty("file.separator") + "INDEXED";
     public static final String METADATA_ARCHIVE = ARCHIVE_FILEPATH_ROOT + System.getProperty("file.separator") + "METADATA.TXT";
     public static final String INDEXING_PERFORMANCE_ARCHIVE = ARCHIVE_FILEPATH_ROOT + System.getProperty("file.separator") + "INDEX_PERFORMANCE.TXT";
+    public static final String INDEXABLE_PROCESSED = ARCHIVE_FILEPATH_ROOT + System.getProperty("file.separator") + "INDEXABLE_PROCESSED";
     
     public static final int MAX_PHOTO_RESPONSE_COUNT = 30; // default enumeration max
     public static final int PERIODIC_REQUEST_LIMIT = 50; // mode: trial = 50; production = 5000
     public static final int RANDOM_NUMBER_FLOOR = 1; // for page request
-    public static final int RANDOM_NUMBER_CEILING = 100; // for page request
+    public static final int RANDOM_NUMBER_CEILING = 200; // for page request
     
     public static final int REQUEST_DELAY_POLITE = 3000;
     public static final int REQUEST_DELAY_LIMIT = 60*60*1000;
