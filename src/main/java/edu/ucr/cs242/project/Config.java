@@ -30,6 +30,7 @@ public class Config {
     public static final String METADATA_ARCHIVE = ARCHIVE_FILEPATH_ROOT + System.getProperty("file.separator") + "METADATA.TXT";
     public static final String INDEXING_PERFORMANCE_ARCHIVE = ARCHIVE_FILEPATH_ROOT + System.getProperty("file.separator") + "INDEX_PERFORMANCE.TXT";
     public static final String INDEXABLE_PROCESSED = ARCHIVE_FILEPATH_ROOT + System.getProperty("file.separator") + "INDEXABLE_PROCESSED";
+    public static final String IMAGE_ARCHIVE_PROCESSED = ARCHIVE_FILEPATH_ROOT + System.getProperty("file.separator") + "IMAGE_PROCESSED";
     
     public static final int MAX_PHOTO_RESPONSE_COUNT = 30; // default enumeration max
     public static final int PERIODIC_REQUEST_LIMIT = 50; // mode: trial = 50; production = 5000
