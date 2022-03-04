@@ -98,7 +98,7 @@ public class Query {
         job.setReducerClass(QueryReducer.class);
         job.setOutputKeyClass(Text.class);
         job.setOutputValueClass(Text.class);
-        FileInputFormat.addInputPath(job, new Path("C:/Users/MachOne/Desktop/CS242/IDFCounter_Test/part-r-00000"));
+        FileInputFormat.addInputPath(job, new Path("C:/Users/MachOne/Desktop/CS242/IDF_INDEX/part-r-00000"));
         FileOutputFormat.setOutputPath(job, new Path("C:/Users/MachOne/Desktop/CS242/Query_Test"));
 
         return job.waitForCompletion(verbose);

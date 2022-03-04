@@ -32,7 +32,11 @@ public class IDFCounter {
             extends Reducer<Text, Text, Text, Text> {
 
         // must make dynamic docnumber later
-        private static double docNumber = 5;
+        private static double docNumber;
+
+        public void setup(Reducer.Context context) {
+            docNumber = Double.parseDouble(context.getConfiguration().get("docNumber"));
+        }
 
         public void reduce(Text key, Iterable<Text> values,
                            Context context
@@ -74,7 +78,7 @@ public class IDFCounter {
         job.setOutputValueClass(Text.class);
 
         FileInputFormat.addInputPath(job, new Path("C:/Users/MachOne/Desktop/CS242/WordCounter_Index/part-r-00000"));
-        FileOutputFormat.setOutputPath(job, new Path("C:/Users/MachOne/Desktop/CS242/IDFCounter_Test"));
+        FileOutputFormat.setOutputPath(job, new Path("C:/Users/MachOne/Desktop/CS242/IDF_INDEX"));
 
         return job.waitForCompletion(verbose);
 

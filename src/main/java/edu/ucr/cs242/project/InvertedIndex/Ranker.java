@@ -21,11 +21,11 @@ public class Ranker {
             extends Mapper<Object, Text, Text, DoubleWritable> {
 
 
-        private TreeMap<String, Double> tmap;
+        private TreeMap<Double, String> tmap;
 
         public void setup(Context context) {
 
-            tmap = new TreeMap<String, Double>();
+            tmap = new TreeMap<Double, String>();
         }
 
         public void map(Object key, Text value, Context context
@@ -35,7 +35,7 @@ public class Ranker {
             String DocID = line[0];
             double score = Double.parseDouble(line[1]);
 
-            tmap.put(DocID, score);
+            tmap.put(score, DocID);
 
             // remove first key-value if size increases beyond 10
             if(tmap.size() > 10) {
@@ -47,11 +47,11 @@ public class Ranker {
         public void cleanup(Context context) throws IOException,
                 InterruptedException
         {
-            for (Map.Entry<String, Double> entry : tmap.entrySet())
+            for (Map.Entry<Double, String> entry : tmap.entrySet())
             {
 
-                String myDocID = entry.getKey();
-                double myScore = entry.getValue();
+                String myDocID = entry.getValue();
+                double myScore = entry.getKey();
 
 
                 context.write(new Text(myDocID), new DoubleWritable(myScore));
@@ -60,15 +60,15 @@ public class Ranker {
     }
 
     public static class RankReducer
-            extends Reducer<Text, DoubleWritable, Text, DoubleWritable> {
+            extends Reducer<Text, DoubleWritable, DoubleWritable, Text> {
 
-        private TreeMap<String, Double> tmap2;
+        private TreeMap<Double, String> tmap2;
 
         @Override
         public void setup(Context context) throws IOException,
                 InterruptedException
         {
-            tmap2 = new TreeMap<String, Double>();
+            tmap2 = new TreeMap<Double, String>();
         }
 
 
@@ -83,7 +83,7 @@ public class Ranker {
                 score = value.get();
             }
 
-            tmap2.put(DocID, score);
+            tmap2.put(score, DocID);
 
             if (tmap2.size() > 10) {
                 tmap2.remove(tmap2.firstKey());
@@ -94,14 +94,14 @@ public class Ranker {
         public void cleanup(Context context) throws IOException,
                 InterruptedException
         {
-            for (Map.Entry<String, Double> entry : tmap2.entrySet())
+            for (Map.Entry<Double, String> entry : tmap2.entrySet())
             {
 
-                String myDocID = entry.getKey();
-                double myScore = entry.getValue();
+                String myDocID = entry.getValue();
+                double myScore = entry.getKey();
 
 
-                context.write(new Text(myDocID), new DoubleWritable(myScore));
+                context.write(new DoubleWritable(myScore), new Text(myDocID));
             }
         }
 
