@@ -107,7 +107,7 @@ public class Ranker {
 
     }
 
-    public static void main(String[] args) throws Exception {
+/*    public static void main(String[] args) throws Exception {
         Configuration conf = new Configuration();
 
         Job job = Job.getInstance(conf, "Rank Evaluator");
@@ -119,5 +119,19 @@ public class Ranker {
         FileInputFormat.addInputPath(job, new Path("C:/Users/MachOne/Desktop/CS242/Query_Test/part-r-00000"));
         FileOutputFormat.setOutputPath(job, new Path("C:/Users/MachOne/Desktop/CS242/Rank_Test"));
         System.exit(job.waitForCompletion(true) ? 0 : 1);
+    }*/
+
+    public static boolean run(Configuration conf, boolean verbose) throws IOException, InterruptedException, ClassNotFoundException {
+        Job job = Job.getInstance(conf, "Rank Evaluator");
+        job.setJarByClass(Query.class);
+        job.setMapperClass(RankMapper.class);
+        job.setReducerClass(RankReducer.class);
+        job.setOutputKeyClass(Text.class);
+        job.setOutputValueClass(DoubleWritable.class);
+        FileInputFormat.addInputPath(job, new Path("C:/Users/MachOne/Desktop/CS242/Query_Test/part-r-00000"));
+        FileOutputFormat.setOutputPath(job, new Path("C:/Users/MachOne/Desktop/CS242/Rank_Test"));
+
+        return job.waitForCompletion(verbose);
+
     }
 }

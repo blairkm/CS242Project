@@ -50,7 +50,7 @@ public class IDFCounter {
         }
     }
 
-    public static void main(String[] args) throws Exception {
+/*    public static void main(String[] args) throws Exception {
         Configuration conf = new Configuration();
 
         Job job = Job.getInstance(conf, "IDF Evaluator");
@@ -63,5 +63,20 @@ public class IDFCounter {
         FileInputFormat.addInputPath(job, new Path("C:/Users/MachOne/Desktop/CS242/wordcountertest"));
         FileOutputFormat.setOutputPath(job, new Path("C:/Users/MachOne/Desktop/CS242/IDFCounter_Test"));
         System.exit(job.waitForCompletion(true) ? 0 : 1);
+    }*/
+
+    public static boolean run(Configuration conf, boolean verbose) throws IOException, InterruptedException, ClassNotFoundException {
+        Job job = Job.getInstance(conf, "IDF Evaluator");
+        job.setJarByClass(IDFCounter.class);
+        job.setMapperClass(IDFMapper.class);
+        job.setReducerClass(IDFReducer.class);
+        job.setOutputKeyClass(Text.class);
+        job.setOutputValueClass(Text.class);
+
+        FileInputFormat.addInputPath(job, new Path("C:/Users/MachOne/Desktop/CS242/WordCounter_Index/part-r-00000"));
+        FileOutputFormat.setOutputPath(job, new Path("C:/Users/MachOne/Desktop/CS242/IDFCounter_Test"));
+
+        return job.waitForCompletion(verbose);
+
     }
 }

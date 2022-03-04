@@ -10,6 +10,7 @@ import org.apache.hadoop.mapreduce.Mapper;
 import org.apache.hadoop.mapreduce.Reducer;
 import org.apache.hadoop.mapreduce.lib.input.FileInputFormat;
 import org.apache.hadoop.mapreduce.lib.output.FileOutputFormat;
+import org.apache.kerby.config.Conf;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
@@ -80,7 +81,7 @@ public class WordCounter {
         }
     }
 
-    public static void main(String[] args) throws Exception {
+/*    public static void main(String[] args) throws Exception {
         Configuration conf = new Configuration();
         Job job = Job.getInstance(conf, "word count");
         job.setJarByClass(WordCounter.class);
@@ -97,5 +98,25 @@ public class WordCounter {
 
         FileOutputFormat.setOutputPath(job, new Path("C:/Users/MachOne/Desktop/CS242/WordCounter_Test"));
         System.exit(job.waitForCompletion(true) ? 0 : 1);
+    }*/
+
+    public static boolean run(Configuration conf, String args, boolean verbose) throws IOException, InterruptedException, ClassNotFoundException {
+        Job job = Job.getInstance(conf, "word count");
+        job.setJarByClass(WordCounter.class);
+        job.setMapperClass(WordCountMapper.class);
+        job.setReducerClass(WordCountReducer.class);
+        job.setOutputKeyClass(Text.class);
+        job.setOutputValueClass(Text.class);
+
+        // added to make recursive, run on all files in folder
+
+        FileInputFormat.setInputDirRecursive(job, true);
+        FileInputFormat.addInputPath(job, new Path(args));
+
+
+        FileOutputFormat.setOutputPath(job, new Path("C:/Users/MachOne/Desktop/CS242/WordCounter_Index"));
+
+        return job.waitForCompletion(verbose);
+
     }
 }

@@ -25,9 +25,7 @@ public class Query {
         private static String query;
 
         public void setup(Context context) {
-              // query = context.getConfiguration().get("query");
-
-            query = "Croatia";
+            query = context.getConfiguration().get("query");
         }
 
         public void map(Object key, Text value, Context context
@@ -79,7 +77,7 @@ public class Query {
         }
     }
 
-    public static void main(String[] args) throws Exception {
+/*    public static void main(String[] args) throws Exception {
         Configuration conf = new Configuration();
 
         Job job = Job.getInstance(conf, "Query Evaluator");
@@ -91,5 +89,19 @@ public class Query {
         FileInputFormat.addInputPath(job, new Path("C:/Users/MachOne/Desktop/CS242/IDFCounter_Test/part-r-00000"));
         FileOutputFormat.setOutputPath(job, new Path("C:/Users/MachOne/Desktop/CS242/Query_Test"));
         System.exit(job.waitForCompletion(true) ? 0 : 1);
+    }*/
+
+    public static boolean run(Configuration conf, boolean verbose) throws IOException, InterruptedException, ClassNotFoundException {
+        Job job = Job.getInstance(conf, "Query Evaluator");
+        job.setJarByClass(Query.class);
+        job.setMapperClass(QueryMapper.class);
+        job.setReducerClass(QueryReducer.class);
+        job.setOutputKeyClass(Text.class);
+        job.setOutputValueClass(Text.class);
+        FileInputFormat.addInputPath(job, new Path("C:/Users/MachOne/Desktop/CS242/IDFCounter_Test/part-r-00000"));
+        FileOutputFormat.setOutputPath(job, new Path("C:/Users/MachOne/Desktop/CS242/Query_Test"));
+
+        return job.waitForCompletion(verbose);
+
     }
 }
