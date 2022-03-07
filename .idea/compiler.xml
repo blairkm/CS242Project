@@ -15,7 +15,7 @@
   </component>
   <component name="JavacSettings">
     <option name="ADDITIONAL_OPTIONS_OVERRIDE">
-      <module name="CS242Project" options="--add-exports jdk.compiler/com.sun.tools.javac.util=ALL-UNNAMED" />
+      <module name="CS242Project" options="" />
     </option>
   </component>
 </project>
