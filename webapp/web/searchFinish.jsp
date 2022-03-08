@@ -1,10 +1,24 @@
-<%@page import="edu.ucr.cs242.project.web.QueryUtil"%><%
+<%@page import="edu.ucr.cs242.project.web.QueryUtil,edu.ucr.cs242.project.test.GeoTest,edu.ucr.cs242.project.util.GeocodingUtil"%><%
 
-    String query = ""+request.getParameter("query");
+    String textQuery = ""+request.getParameter("query");
+    String locationQuery = ""+request.getParameter("query2");
+    String radiusQuery = ""+request.getParameter("query3");
     
-    // @todo - process query value
+    String displayResult = "";
     
-    String queryProcessed = QueryUtil.process(query);
+    String queryProcessed = "";
+    if (!textQuery.isEmpty()) {
+        queryProcessed = textQuery;
+        displayResult = QueryUtil.process(textQuery);
+    } else if (!locationQuery.isEmpty() && !radiusQuery.isEmpty()) {
+        queryProcessed = locationQuery + " (" + radiusQuery + " miles)";
+        String latitude = "";
+        String longitude = "";
+        String geocodingResponse = GeocodingUtil.request(locationQuery.trim());
+        latitude = GeocodingUtil.getLatitude(geocodingResponse);
+        longitude = GeocodingUtil.getLongitude(geocodingResponse);
+        displayResult = GeoTest.performQuery(latitude, longitude, Float.parseFloat(""+radiusQuery.trim()));
+    }
 
 %>
 <html>
@@ -18,6 +32,8 @@
         <p><b>searchFinish.jsp</b></p>
         
         <p>Query Value: <%= queryProcessed %></p>
+        
+        <%= displayResult %>
         
         <p><a href="searchStart.jsp">Back</a></p>
         
