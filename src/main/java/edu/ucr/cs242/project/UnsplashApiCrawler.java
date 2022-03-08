@@ -30,7 +30,7 @@ public class UnsplashApiCrawler {
     
     private static int REQUEST_COUNT = 0;
     
-    protected static void perform() {        
+   protected static void perform() {        
         do {            
             getByContext("latest");        
             getByContext("popular");        

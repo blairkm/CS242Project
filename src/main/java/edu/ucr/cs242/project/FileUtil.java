@@ -212,7 +212,7 @@ public class FileUtil {
         }
     }
     
-    public static int getFileCount(String _filepath, boolean _recursive) {
+    public int getFileCount(String _filepath, boolean _recursive) {
         return getFiles(_filepath, _recursive).size();
     }
     
