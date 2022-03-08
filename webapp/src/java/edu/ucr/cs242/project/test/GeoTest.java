@@ -69,9 +69,9 @@ public class GeoTest {
                 System.out.println("longitude: " + longitude);
                 */
                 
-                retVal += ++ctr;
+                retVal += ++ctr + ". Photo ID: " + id;
                 retVal += "<br/>";
-                retVal += "Photo ID: " + id;
+                retVal += "<img src='http://localhost:8080/searchPortal/photo/?id=" + id + "' width='250' height='250' />";
                 retVal += "<br/>";
                 retVal += "Location Name: " + name;
                 retVal += "<br/>";
