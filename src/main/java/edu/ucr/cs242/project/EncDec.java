@@ -16,7 +16,7 @@ public class EncDec {
         return retVal;
     }
 
-    protected static String dec(String _val) {
+    public static String dec(String _val) {
         String retVal = "";
         AES256TextEncryptor textEncryptor = new AES256TextEncryptor();
         textEncryptor.setPassword(ENC_DEC_CREDENTIAL);
