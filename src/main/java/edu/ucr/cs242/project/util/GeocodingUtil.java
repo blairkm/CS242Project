@@ -2,6 +2,7 @@ package edu.ucr.cs242.project.util;
 
 import com.google.gson.Gson;
 import edu.ucr.cs242.project.Config;
+import edu.ucr.cs242.project.EncDec;
 import edu.ucr.cs242.project.json.GeocodeResponse;
 import edu.ucr.cs242.project.json.UnsplashResponse;
 import java.io.IOException;
@@ -20,14 +21,14 @@ import org.apache.hc.core5.http.io.entity.EntityUtils;
  */
 public class GeocodingUtil {
 
-    // i.e. api.openweathermap.org/geo/1.0/direct?q=Maldives&appid=e1a62f9c0c5a176fe3e55e438582d55c
+    // i.e. api.openweathermap.org/geo/1.0/direct?q=CITY_STATE_COUNTRY&appid=API_KEY
     
     public static String request(String _location) {
         String retVal = "";
 
         try (CloseableHttpClient httpclient = HttpClients.createDefault()) {
 
-            HttpGet httpGet = new HttpGet("https://api.openweathermap.org/geo/1.0/direct?q=" + _location + "&appid=e1a62f9c0c5a176fe3e55e438582d55c");
+            HttpGet httpGet = new HttpGet("https://api.openweathermap.org/geo/1.0/direct?q=" + _location + "&appid=" + EncDec.dec("SrPyU7Kcy7LBWuOn9gR/urYu2LYXJxXj5S+/VGe3n5nX2NG9mMjrnDI3hj6umF9fdGc5xfBRpmZV7kTIxOgT5Yjz6OSTl0ZRm3PuphJMXw4="));
 
             int statusCode = -1;
             String result = "";
