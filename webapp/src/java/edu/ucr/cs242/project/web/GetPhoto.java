@@ -1,5 +1,6 @@
 package edu.ucr.cs242.project.web;
 
+import edu.ucr.cs242.project.Config;
 import java.io.DataInputStream;
 import java.io.File;
 import java.io.FileInputStream;
@@ -18,7 +19,7 @@ public class GetPhoto extends HttpServlet {
     protected void doGet(HttpServletRequest req, HttpServletResponse res) throws IOException {
 
         // serve logo
-        String filepath = "/Users/rehmke/development/school/Cs242/DATA/IMAGE/" + req.getParameter("id");
+        String filepath = Config.IMAGE_ARCHIVE_FILEPATH + "/" + req.getParameter("id");
         File file = new File(filepath);
         res.reset();
         res.setBufferSize(10240);
