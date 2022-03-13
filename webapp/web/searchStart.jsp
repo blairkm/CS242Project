@@ -11,6 +11,7 @@
         <form id="f1" name="f1" method="post" action="searchFinish.jsp">
         
             <p>Text Query: <input type="text" value="" size="25" name="query" id="query" /></p>
+            <p>Index Option: <input type="radio" name="r1"> Lucene <input type="radio" name="r2" checked>Hadoop </p>
             <p><input type="submit" value="Search" name="b1" /></p>
             
             <hr/>
