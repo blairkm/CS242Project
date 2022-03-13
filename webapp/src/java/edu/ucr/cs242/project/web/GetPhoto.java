@@ -19,7 +19,7 @@ public class GetPhoto extends HttpServlet {
     protected void doGet(HttpServletRequest req, HttpServletResponse res) throws IOException {
 
         // serve logo
-        String filepath = Config.IMAGE_ARCHIVE_FILEPATH + "/" + req.getParameter("id");
+        String filepath = Config.IMAGE_ARCHIVE_FILEPATH + System.getProperty("file.separator") + req.getParameter("id");
         File file = new File(filepath);
         res.reset();
         res.setBufferSize(10240);
